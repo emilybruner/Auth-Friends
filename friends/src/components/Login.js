@@ -7,7 +7,7 @@ class Login extends React.Component {
             username: '',
             password: ''
         },
-        isFetching: false
+        isLoggedIn: false
     }
 
     handleChange = e => {
@@ -22,13 +22,13 @@ class Login extends React.Component {
     login = e => {
         e.preventDefault();
         this.setState({
-            isFetching: true
+            isLoggedIn: true
         });
         axiosWithAuth()
         .post('/login', this.state.credentials)
         .then(res => {
             localStorage.setItem('token', res.data.payload);
-            this.props.history.push('/protected');
+            this.props.history.push('/friends');
         })
         .catch(err => console.log(err));
     }
@@ -36,7 +36,8 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                <form onSUbmit={this.login}>
+                <h2>Login to See Friends</h2>
+                <form onSubmit={this.login}>
                     <input
                       type="text"
                       name="username"
@@ -50,7 +51,7 @@ class Login extends React.Component {
                       onChange={this.handleChange}
                     />
                     <button>Log In</button>
-                    {this.state.isFetching && 'logging in'}
+                    {this.state.isLoggedIn && 'logging in'}
                 </form>
             </div>
         );
